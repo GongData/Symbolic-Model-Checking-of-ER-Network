@@ -1,0 +1,284 @@
+  MODULE main
+
+    VAR
+
+	  ATF6: {0,1,2};	S12P: {0,1,2};	  	ATF6f: {0,1,2};	
+ 	  XBP1: {0,1,2};  	cMYC: {0,1,2};	  	Bcl2: {0,1,2};	  
+
+          PERK: {0,1,2};   	eIF2a: {0,1,2};         ATF4: {0,1,2};  
+	  CHOP: {0,1,2};        GADD34: {0,1,2};	P53: {0,1,2};  
+	  IKK: {0,1,2};	  	IkB: {0,1,2};	 	 NFkB: {0,1,2};	  
+	  A20: {0,1,2};	  	CyclinD: {0,1,2};	 Survival: {0,1,2};  	  
+
+	  IRE1: {0,1,2};	 TRAF2: {0,1,2};	ASK1: {0,1,2};	  
+	  JNK: {0,1,2};	 	 BAX: {0,1,2};		Cytoc: {0,1,2};	
+	  Caspase9: {0,1,2};     BACE1: {0,1,2};        Abeta: {0,1,2};
+
+	  Cancer: boolean;	  
+	  Apoptosis: boolean;  
+	  Alzheimer: boolean;	  
+
+    ASSIGN
+
+    init(ATF6):={0,1}; 	init(PERK) := {0,1}; init(IRE1) := {0,1};
+    init(S12P) := {0,1};
+    init(ATF6f) := {0,1};
+    init(XBP1) := {0,1};    init(cMYC) := {0,1};    init(Bcl2) := {0,1};
+  
+    init(eIF2a) := {0,1};    init(ATF4) := {0,1};    
+    init(CHOP) := {0,1};    init(GADD34) := {0,1};
+    init(P53) := {0,1};      init(IKK) := {0,1};    init(IkB) := {0,1};    	     
+    init(NFkB) := {0,1};    init(A20) := {0,1};    init(CyclinD) := {0,1};
+    init(Survival) := {0,1}; 
+
+    init(TRAF2) := {0,1};    init(ASK1) := {0,1};    init(JNK) := {0,1};
+    init(BAX) := {0,1};    init(Cytoc) := {0,1};    init(Caspase9) := {0,1};
+    init(BACE1) := {0,1};    init(Abeta) := {0,1};    
+ 
+	init(Cancer) := {FALSE};    
+	init(Apoptosis) := {FALSE}; 
+	init(Alzheimer) := {FALSE}; 
+
+
+   next(ATF6) := ATF6;       next(S12P) := S12P;
+   next(PERK) := PERK;       next(IRE1) := IRE1;
+
+   next(ATF6f) :=    
+        case
+            (ATF6=2 & S12P = 2): 2;
+            ((ATF6=2 &  S12P =1) | (ATF6 =1 &  S12P =2) | (ATF6 =1 & S12P =1)) : 1;
+	    ((S12P =0) |(ATF6 =0))  : 0;
+        esac;
+
+   next(XBP1) :=    
+        case
+            ATF6f >= 2  : 2;
+            ATF6f = 1   : 1;
+            ATF6f = 0   : 0;    
+        esac;
+
+   next(cMYC) :=    
+        case
+            XBP1 >= 2  : 2;
+            XBP1 = 1   : 1;
+            XBP1 = 0   : 0;
+        esac;
+
+   next(Bcl2) :=    
+        case
+            XBP1 - CHOP >= 2  : 2;
+            XBP1 - CHOP = 1   : 1;
+            XBP1 - CHOP <= 0   : 0;
+        esac;
+
+   next(eIF2a) :=    
+        case
+            PERK - GADD34 >= 2  : 2;
+            PERK - GADD34 = 1   : 1;
+            PERK - GADD34 <= 0   : 0;
+        esac;
+
+   next(ATF4) :=    
+        case
+            eIF2a >= 2  : 2;
+            eIF2a = 1   : 1;
+            eIF2a = 0   : 0;
+        esac;
+
+   next(CHOP) :=    
+        case
+            ATF4 - NFkB >= 2  : 2;
+            ATF4 - NFkB = 1   : 1;
+            ATF4 - NFkB <= 0   : 0;
+        esac;
+
+  next(GADD34) :=    
+        case
+            CHOP >= 2  : 2;
+            CHOP = 1   : 1;
+            CHOP = 0   : 0;
+        esac;
+
+  next(P53) :=    
+        case
+            GADD34 >= 2  : 2;
+            GADD34 = 1   : 1;
+            GADD34 = 0   : 0;
+        esac;
+
+  next(TRAF2) :=    
+        case
+            IRE1 >= 2  : 2;
+            IRE1 = 1   : 1;
+            IRE1 = 0   : 0;
+        esac;
+
+next(IKK) :=    
+        case
+            A20 >= 1  : 0;
+            A20 = 0   : {1,2};        
+        esac;
+
+next(IkB) :=    
+        case
+            IKK >= 1  : 0;           
+            IKK = 0   : {1,2};
+            
+        esac;
+
+next(NFkB) :=    
+        case
+            IkB >= 1  : 0;           
+            IkB = 0   : {1,2};
+           
+        esac;
+
+next(A20) :=    
+        case
+            NFkB >=2  : 2;           
+            NFkB = 1  : 1;           
+             NFkB = 0   : 0;
+           
+        esac;
+
+
+ next(CyclinD) :=    
+        case
+            NFkB >= 2  : 2;
+            NFkB = 1   : 1;
+            NFkB = 0   : 0;
+        esac;
+
+next(ASK1) :=    
+        case
+            TRAF2 >= 2  : 2;
+            TRAF2 = 1   : 1;
+            TRAF2 = 0   : 0;
+        esac;
+
+next(JNK) :=    
+        case
+            ASK1 >= 2  : 2;
+            ASK1 = 1   : 1;
+            ASK1 = 0   : 0;
+        esac;
+
+next(BAX) :=    
+        case
+            JNK >= 2  : 2;
+            JNK = 1   : 1;
+            JNK = 0   : 0;
+        esac;
+
+next(Cytoc) :=    
+        case
+            BAX >= 2  : 2;
+            BAX = 1   : 1;
+            BAX = 0   : 0;
+        esac;
+
+next(Caspase9) :=    
+        case
+            Cytoc >= 2  : 2;
+            Cytoc = 1   : 1;
+            Cytoc = 0   : 0;
+        esac;
+
+next(BACE1) :=    
+        case
+            JNK + NFkB >= 2  : 2;
+            JNK + NFkB = 1   : 1;
+            JNK + NFkB = 0   : 0;
+        esac;
+
+next(Abeta) :=    
+        case
+            BACE1 >= 2  : 2;
+            BACE1 = 1   : 1;
+            BACE1 = 0   : 0;
+        esac;
+
+next(Survival) := 
+        case
+            CyclinD + cMYC - P53 >= 2  : 2;
+            CyclinD + cMYC - P53 = 1  : 1;
+            CyclinD + cMYC - P53 <=0  : 0;
+        esac;
+
+next(Cancer) := 
+        case
+            Survival >= 1  : 1;
+		1: 0;
+        esac;
+
+next(Alzheimer) :=
+        case
+            Abeta >= 1  : 1;
+                1: 0;
+        esac;
+
+next(Apoptosis) :=  
+        case
+            P53 + Caspase9 - Bcl2 >= 1  : 1;
+                1: 0;  
+        esac;
+
+---Properties
+
+--- Alzheimer’s disease
+
+ --- SPEC IRE1=1 -> AF(Abeta>=1 & Alzheimer) --- True
+ --- SPEC IRE1=2 -> AF(Abeta>=1 & Alzheimer) --- True
+ --- SPEC PERK=1 -> AF(Abeta>=1 & Alzheimer) --- True
+ --- SPEC PERK=2 -> AF(Abeta>=1 & Alzheimer) --- True
+
+ --- SPEC IRE1=1 -> AF(Caspase9>=1 & Apoptosis) --- False
+ --- SPEC IRE1=2 -> AF(Caspase9>=1 & Apoptosis) --- True
+ --- SPEC PERK=1 -> EF(Caspase9>=1 & Apoptosis) --- False
+ --- SPEC PERK=2 -> AF(Caspase9>=1 & Apoptosis) --- True 
+
+--- SPEC PERK=2 -> AF(Abeta>=1 & Alzheimer & Caspase9>=1 & Apoptosis) --- True
+--- SPEC IRE1=2 -> AF(Abeta>=1 & Alzheimer & Caspase9>=1 & Apoptosis) --- True
+
+--- important key proteins
+
+--- SPEC AG(TRAF2=2 -> AF(Abeta>=1 & Alzheimer)) --- True
+--- SPEC AG(NFkB=2 -> AF(Abeta>=1 & Alzheimer)) --- True
+--- SPEC AG(ASK1=2 -> AF(Abeta>=1 & Alzheimer)) --- True
+
+--- SPEC AG(TRAF2=2 -> EF(Abeta>=1 & Alzheimer)) --- True
+---  SPEC AG(NFkB=2 -> EF(Abeta>=1 & Alzheimer)) --- True
+--- SPEC AG(ASK1=2 -> EF(Abeta>=1 & Alzheimer)) --- True
+
+--- Cancer
+
+---SPEC (ATF6 >=1 ) -> AF(cMYC>=1 & Cancer & !Apoptosis)  --- False
+---SPEC ((ATF6>=1 & S12P>=1) -> AF(cMYC>=1 & Cancer & !Apoptosis)) --- True
+--- SPEC (IRE1=2) -> AF(CyclinD=2 & Survival=2 & Cancer & P53=2 & Apoptosis) --- True
+------ SPEC (IRE1=2 | (ATF6>=1 & S12P>=1) ) -> AF(CyclinD>=1 & Cancer) --- True
+
+--- Important cancer markers
+---SPEC AG(IKK=2 -> AF(P53=0   &  Cancer)) --- True
+---SPEC AG(NFkB=2 -> AF(P53=0  &  Cancer)) --- True
+---SPEC AG(ATF4=2 -> AF(P53>=1 & Apoptosis & !Cancer)) --- True
+---SPEC AG(ATF4=2 -> EF(P53>=1 & Apoptosis & !Cancer)) --- True
+
+--- Combine
+---SPEC AG(NFkB=2 -> AF(P53=0  & Cancer & Abeta>=1 & Alzheimer)) --- True
+---SPEC AG(NFkB=2 -> AF(P53=0 & !Apoptosis  & Cancer & Abeta>=1 & Alzheimer)) --- False
+
+--- Dynamic Behavior
+--- SPEC AG((NFkB>1 -> AF(A20>=1)) & (A20>=1 -> AF(NFkB=0))) 			--- True
+--- SPEC (PERK >=1 | IRE1 >=1) -> AG((NFkB>=1 -> AF(A20>=1)) & (A20>=1 -> AF(NFkB<1))) --- True
+--- SPEC AG((NFkB>=1 -> AF(NFkB<1)) & (NFkB<1 -> AF(NFkB>=1))) 			--- True
+--- SPEC (PERK >=1 | IRE1 >=1) -> AG((NFkB>=1 -> AF(NFkB<1)) & (NFkB<1 -> AF(NFkB>=1))) --- True
+
+--- SPEC AG((GADD34>1 -> AF(ATF4=0)) & (ATF4=0 -> AF(GADD34=0))) --- True
+
+
+
+
+
+
+
+

@@ -1,0 +1,529 @@
+
+MODULE modATF6f(ATF6, S12P)
+
+  VAR
+      
+     modATF6f: {0,1,2};
+
+  ASSIGN
+ 
+     init(modATF6f):={0,1};
+
+   next(modATF6f) :=    
+        case
+          ---  ATF6 >1 & S12P >1  : 2;
+          ---  ATF6 >0 & S12P >0 & ATF6 + S12P <=3  : 1;
+          ---  ATF6 <1 | S12P <1  : 0;
+   
+          (ATF6=2 & S12P = 2): 2;
+            (ATF6=2 &  S12P =1) | (ATF6 =1 &  S12P =2) | (ATF6 =1 & S12P =1) : 1;
+	    (S12P =0) |(ATF6 =0)  : 0;
+ 
+   esac;
+
+
+MODULE modXBP1(ATF6f)
+
+  VAR
+      
+     modXBP1: {0,1,2};
+
+  ASSIGN
+ 
+     init(modXBP1):={0,1};
+
+
+   next(modXBP1) :=    
+        case
+            ATF6f >= 2  : 2;
+            ATF6f = 1   : 1;
+            ATF6f = 0   : 0;    
+   esac;
+
+
+MODULE modcMYC(XBP1)
+
+  VAR
+      
+     modcMYC: {0,1,2};
+
+  ASSIGN
+ 
+     init(modcMYC):={0,1};
+
+   next(modcMYC) :=    
+        case
+            XBP1 >= 2  : 2;
+            XBP1 = 1   : 1;
+            XBP1 = 0   : 0;
+   esac;
+
+MODULE modBcl2(XBP1, CHOP)
+
+  VAR
+      
+     modBcl2: {0,1,2};
+
+  ASSIGN
+ 
+     init(modBcl2):={0,1};
+
+
+   next(modBcl2) :=    
+        case
+            XBP1 - CHOP >= 2  : 2;
+            XBP1 - CHOP = 1   : 1;
+            XBP1 - CHOP <= 0   : 0;
+  esac;
+
+MODULE modeIF2a(PERK, GADD34)
+
+  VAR
+      
+     modeIF2a: {0,1,2};
+
+  ASSIGN
+ 
+     init(modeIF2a):={0,1};
+
+
+   next(modeIF2a) :=    
+        case
+            PERK - GADD34 >= 2  : 2;
+            PERK - GADD34 = 1   : 1;
+            PERK - GADD34 <= 0   : 0;
+   esac;
+
+
+MODULE modATF4(eIF2a)
+
+  VAR
+    modATF4: {0,1,2};
+
+  ASSIGN 
+     init(modATF4):={0,1};
+
+   next(modATF4) :=    
+        case
+            eIF2a >= 2  : 2;
+            eIF2a = 1   : 1;
+            eIF2a = 0   : 0;
+        esac;
+
+MODULE modCHOP(ATF4, NFkB)
+
+  VAR
+    modCHOP: {0,1,2};
+
+  ASSIGN 
+     init(modCHOP):={0,1};
+   next(modCHOP) :=    
+        case
+            ATF4 - NFkB >= 2  : 2;
+            ATF4 - NFkB = 1   : 1;
+            ATF4 - NFkB <= 0   : 0;
+        esac;
+
+MODULE modGADD34(CHOP)
+
+  VAR
+    modGADD34: {0,1,2};
+
+  ASSIGN 
+     init(modGADD34):={0,1};
+
+  next(modGADD34) :=    
+        case
+            CHOP >= 2  : 2;
+            CHOP = 1   : 1;
+            CHOP = 0   : 0;
+        esac;
+
+MODULE modP53(GADD34)
+
+  VAR
+    modP53: {0,1,2};
+
+  ASSIGN 
+     init(modP53):={0,1};
+
+  next(modP53) :=    
+        case
+            GADD34 >= 2  : 2;
+            GADD34 = 1   : 1;
+            GADD34 = 0   : 0;
+        esac;
+
+MODULE modTRAF2(IRE1)
+
+  VAR
+    modTRAF2: {0,1,2};
+
+  ASSIGN 
+     init(modTRAF2):={0,1};
+
+  next(modTRAF2) :=    
+        case
+            IRE1 >= 2  : 2;
+            IRE1 = 1   : 1;
+            IRE1 = 0   : 0;
+        esac;
+
+
+MODULE modIKK(A20)
+
+  VAR
+    modIKK: {0,1,2};
+
+  ASSIGN 
+     init(modIKK):={0,1};
+
+next(modIKK) :=    
+        case
+            A20 >= 1  : 0;
+            A20 = 0   : {1,2};        
+        esac;
+
+MODULE modIkB(IKK)
+
+  VAR
+    modIkB: {0,1,2};
+
+  ASSIGN 
+     init(modIkB):={0,1};
+
+next(modIkB) :=    
+        case
+            IKK >= 1  : 0;           
+            IKK = 0   : {1,2};
+            
+        esac;
+
+MODULE modNFkB(IkB)
+
+  VAR
+    modNFkB: {0,1,2};
+
+  ASSIGN 
+     init(modNFkB):={0,1};
+
+next(modNFkB) :=    
+        case
+            IkB >= 1  : 0;           
+            IkB = 0   : {1,2};
+           
+        esac;
+
+MODULE modA20(NFkB)
+
+  VAR
+    modA20: {0,1,2};
+
+  ASSIGN 
+     init(modA20):={0,1};
+
+next(modA20) :=    
+        case
+            NFkB >=2  : 2;           
+            NFkB = 1  : 1;           
+             NFkB = 0   : 0;
+           
+        esac;
+
+
+MODULE modCyclinD(NFkB)
+
+  VAR
+    modCyclinD: {0,1,2};
+
+  ASSIGN 
+     init(modCyclinD):={0,1};
+
+
+ next(modCyclinD) :=    
+        case
+            NFkB >= 2  : 2;
+            NFkB = 1   : 1;
+            NFkB = 0   : 0;
+        esac;
+
+MODULE modASK1(TRAF2)
+
+  VAR
+    modASK1: {0,1,2};
+
+  ASSIGN 
+     init(modASK1):={0,1};
+
+
+next(modASK1) :=    
+        case
+            TRAF2 >= 2  : 2;
+            TRAF2 = 1   : 1;
+            TRAF2 = 0   : 0;
+        esac;
+
+MODULE modJNK(ASK1)
+
+  VAR
+    modJNK: {0,1,2};
+
+  ASSIGN 
+     init(modJNK):={0,1};
+
+
+next(modJNK) :=    
+        case
+            ASK1 >= 2  : 2;
+            ASK1 = 1   : 1;
+            ASK1 = 0   : 0;
+        esac;
+
+MODULE modBAX(JNK)
+
+  VAR
+    modBAX: {0,1,2};
+
+  ASSIGN 
+     init(modBAX):={0,1};
+
+
+next(modBAX) :=    
+        case
+            JNK >= 2  : 2;
+            JNK = 1   : 1;
+            JNK = 0   : 0;
+        esac;
+
+MODULE modCytoc(BAX)
+
+  VAR
+    modCytoc: {0,1,2};
+
+  ASSIGN 
+     init(modCytoc):={0,1};
+
+next(modCytoc) :=    
+        case
+            BAX >= 2  : 2;
+            BAX = 1   : 1;
+            BAX = 0   : 0;
+        esac;
+
+MODULE modCaspase9(Cytoc)
+
+  VAR
+    modCaspase9: {0,1,2};
+
+  ASSIGN 
+     init(modCaspase9):={0,1};
+
+next(modCaspase9) :=    
+        case
+            Cytoc >= 2  : 2;
+            Cytoc = 1   : 1;
+            Cytoc = 0   : 0;
+        esac;
+
+MODULE modBACE1(JNK, NFkB)
+
+  VAR
+    modBACE1: {0,1,2};
+
+  ASSIGN 
+     init(modBACE1):={0,1};
+
+
+next(modBACE1) :=    
+        case
+            JNK + NFkB >= 2  : 2;
+            JNK + NFkB = 1   : 1;
+            JNK + NFkB = 0   : 0;
+        esac;
+
+
+MODULE modAbeta(BACE1)
+
+  VAR
+    modAbeta: {0,1,2};
+
+  ASSIGN 
+     init(modAbeta):={0,1};
+
+
+next(modAbeta) :=    
+        case
+            BACE1 >= 2  : 2;
+            BACE1 = 1   : 1;
+            BACE1 = 0   : 0;
+        esac;
+
+MODULE modSurvival(CyclinD, cMYC, P53)
+
+  VAR
+    modSurvival: {0,1,2};
+
+  ASSIGN 
+     init(modSurvival):={0,1};
+
+next(modSurvival) := 
+        case
+            CyclinD + cMYC - P53 >= 2  : 2;
+            CyclinD + cMYC - P53 = 1  : 1;
+            CyclinD + cMYC - P53 <=0  : 0;
+        esac;
+
+MODULE modCancer(Survival)
+
+  VAR
+    modCancer: {0,1};
+
+  ASSIGN 
+     init(modCancer):={0}; 
+
+next(modCancer) := 
+        case
+            Survival >= 1  : 1;
+		1: 0;
+        esac;
+
+MODULE modAlzheimer(Abeta)
+
+  VAR
+    modAlzheimer: {0,1};
+
+  ASSIGN 
+     init(modAlzheimer):={0}; 
+
+next(modAlzheimer) :=
+        case
+            Abeta >= 1  : 1;
+                1: 0;
+        esac;
+
+MODULE modApoptosis(P53, Caspase9, Bcl2)
+
+  VAR
+    modApoptosis: {0,1};
+
+  ASSIGN 
+     init(modApoptosis):={0}; 
+
+
+next(modApoptosis) :=  
+        case
+            P53 + Caspase9 - Bcl2 >= 1  : 1;
+                1: 0;  
+        esac;
+
+
+MODULE main
+
+    VAR
+
+	  ATF6: {0,1,2};	
+	  S12P: {0,1,2};	  	
+	  ATF6f: process modATF6f(ATF6, S12P);	
+ 	  XBP1: process modXBP1(ATF6f);
+    	  cMYC: process modcMYC(XBP1);
+	  Bcl2: process modBcl2(XBP1, CHOP);	  
+
+          PERK: {0,1,2};   	
+	  eIF2a: process modeIF2a(PERK, GADD34);
+          ATF4: process modATF4(eIF2a);  
+	  CHOP: process modCHOP(ATF4, NFkB);
+          GADD34: process modGADD34(CHOP);
+ 	  P53: process modP53(GADD34);  
+	  IKK: process modIKK(A20);
+	  IkB: process modIkB(IKK);
+	  NFkB: process modNFkB(IkB);	  
+	  A20: process modA20(NFkB);
+	  CyclinD: process modCyclinD(NFkB);
+	  Survival: process modSurvival(CyclinD, cMYC, P53);  	  
+
+	  IRE1: {0,1,2};	 
+	  TRAF2: process modTRAF2(IRE1);
+ 	  ASK1: process modASK1(TRAF2);	  
+	  JNK: process modJNK(ASK1);
+	  BAX: process modBAX(JNK);			  
+	  Cytoc: process modCytoc(BAX);	
+	  Caspase9: process modCaspase9(Cytoc);
+          BACE1:process modBACE1(JNK, NFkB);
+          Abeta: process modAbeta(BACE1);
+
+	  Cancer: process modCancer(Survival);	  
+	  Apoptosis: process modApoptosis(P53, Caspase9, Bcl2);  
+	  Alzheimer: process modAlzheimer(Abeta);	  
+
+    ASSIGN
+
+    init(ATF6):={0,1}; 	init(PERK) := {0,1}; init(IRE1) := {0,1};
+    init(S12P) := {0,1};    
+ 
+   next(ATF6) := ATF6;    next(PERK) := PERK;    next(IRE1) := IRE1;
+   next(S12P) := S12P;
+
+FAIRNESS
+running
+
+---Properties
+
+--- Alzheimer’s disease
+------ SPEC IRE1=1 -> AF(Abeta>=1 & Alzheimer=1) --- False
+--- SPEC IRE1=2 -> AF(Abeta>=1 & Alzheimer=1) --- True
+------ SPEC PERK=1 -> AF(Abeta>=1 & Alzheimer=1) --- False
+--- SPEC PERK=2 -> AF(Abeta>=1 & Alzheimer=1) --- True
+
+--- SPEC IRE1=1 -> AF(Caspase9>=1 & Apoptosis=1) --- False
+--- SPEC IRE1=2 -> AF(Caspase9>=1 & Apoptosis=1) --- True
+--- SPEC PERK=1 -> EF(Caspase9>=1 & Apoptosis=1) --- False
+--- SPEC PERK=2 -> AF(Caspase9>=1 & Apoptosis=1) --- True  
+--- SPEC PERK=2 -> AF(Abeta>=1 & Alzheimer=1 & Caspase9>=1 & Apoptosis=1) --- True 
+--- SPEC IRE1=2 -> AF(Abeta>=1 & Alzheimer=1 & Caspase9>=1 & Apoptosis=1) --- True 
+
+--- important key proteins
+--- SPEC AG(TRAF2=2 -> AF(Abeta>=1 & Alzheimer=1)) --- False
+--- SPEC AG(NFkB=2 -> AF(Abeta>=1 & Alzheimer=1)) --- False
+--- SPEC AG(ASK1=2 -> AF(Abeta>=1 & Alzheimer=1)) --- False
+
+--- SPEC AG(TRAF2=2 -> EF(Abeta>=1 & Alzheimer=1)) --- True
+--- SPEC AG(NFkB=2 -> EF(Abeta>=1 & Alzheimer=1)) --- True
+--- SPEC AG(ASK1=2 -> EF(Abeta>=1 & Alzheimer=1)) --- True
+
+--- Cancer
+
+---SPEC ATF6>=1 -> AF(cMYC>=1 & Cancer=1 & Apoptosis=0) --- False
+---SPEC (ATF6>=1 & S12P>=1) -> AF(cMYC>=1 & Cancer=1 & Apoptosis=0) --- False
+---SPEC (ATF6>=1 & S12P>=1) -> EF(cMYC>=1 & Cancer=1 & Apoptosis=0) --- True
+---SPEC (IRE1=2) -> AF(CyclinD=2 & Survival>1 & Cancer=1 & P53>1 & Apoptosis=1) --- True
+
+---SPEC (IRE1=2 | (ATF6>=1 & S12P>=1) ) -> AF(CyclinD>=1 & Cancer=1) --- False
+---SPEC (IRE1=2 | (ATF6>=1 & S12P>=1) ) -> EF(CyclinD>=1 & Cancer=1) --- True
+
+--- Important cancer markers
+---SPEC AG(IKK=2 -> AF(P53=0   &  Cancer=1)) --- False
+---SPEC AG(NFkB=2 -> AF(P53=0  &  Cancer=1)) --- False
+---SPEC AG(ATF4=2 -> AF(P53>=1 & Apoptosis =1 & Cancer=0)) --- False
+
+---SPEC AG(IKK=2 -> EF(P53=0   &  Cancer=1)) --- True
+---SPEC AG(NFkB=2 -> EF(P53=0  &  Cancer=1)) --- True
+---SPEC AG(ATF4=2 -> EF(P53>=1 & Apoptosis =1 & Cancer=0)) --- True
+
+--- Combine
+---SPEC AG(NFkB=2 -> AF(P53=0  & Cancer=1 & Abeta>=1 & Alzheimer=1)) --- False
+---SPEC AG(NFkB=2 -> AF(P53=0 & Apoptosis=0  & Cancer=1 & Abeta>=1 & Alzheimer=1)) --- False
+
+
+--- Dynamic Behavior
+---SPEC AG((NFkB>1 -> AF(A20>=1)) & (A20>=1 -> AF(NFkB=0))) 				--- False
+---SPEC (PERK >=1 | IRE1 >=1) -> AG((NFkB>=1 -> AF(A20>=1)) & (A20>=1 -> AF(NFkB<1)))   --- False
+---SPEC AG((NFkB>=1 -> AF(NFkB<1)) & (NFkB<1 -> AF(NFkB>=1))) 				--- False
+---SPEC (PERK >=1 | IRE1 >=1) -> AG((NFkB>=1 -> AF(NFkB<1)) & (NFkB<1 -> AF(NFkB>=1)))   --- False
+
+---SPEC AG((NFkB>1 -> EF(A20>=1)) & (A20>=1 -> EF(NFkB=0)))				 --- True
+---SPEC (PERK >=1 | IRE1 >=1) -> AG((NFkB>=1 -> EF(A20>=1)) & (A20>=1 -> EF(NFkB<1)))	 --- True
+---SPEC AG((NFkB>=1 -> EF(NFkB<1)) & (NFkB<1 -> EF(NFkB>=1))) 				 --- True
+---SPEC (PERK >=1 | IRE1 >=1) -> AG((NFkB>=1 -> EF(NFkB<1)) & (NFkB<1 -> EF(NFkB>=1)))	 --- True
+
+---SPEC AG((GADD34>1 -> AF(ATF4=0)) & (ATF4=0 -> AF(GADD34=0))) --- False
+---SPEC AG((GADD34>1 -> EF(ATF4=0)) & (ATF4=0 -> EF(GADD34=0)))  --- True
